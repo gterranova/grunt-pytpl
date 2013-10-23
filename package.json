@@ -29,8 +29,7 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "node-pytpl-bin": "git+ssh://git@github.com:gterranova/node-pytpl-bin.git",
-    "async": "~0.2.9"
+    "node-pytpl-bin": "git+ssh://git@github.com:gterranova/node-pytpl-bin.git"
   },  
   "devDependencies": {
     "grunt-contrib-jshint": "~0.2.0",
