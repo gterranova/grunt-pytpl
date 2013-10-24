@@ -22,7 +22,7 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
-exports.pyserver = {
+exports.pytpl = {
   setUp: function(done) {
     // setup here if necessary
     done();
@@ -38,5 +38,5 @@ exports.pyserver = {
     // TODO: tests
     
     test.done();
-  },
+  }
 };

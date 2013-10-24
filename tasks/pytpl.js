@@ -12,17 +12,27 @@ module.exports = function(grunt) {
     var path = require('path');
     var spawn = require('child_process').spawn;
     var pytpl = require('node-pytpl-bin');
-    var async = require('async');
     
-    var compile = function(src, dest)  {
+    var processTemplate = function(src, dest, cb)  {
         var pytplArgs = [pytpl.path, src, dest];
         grunt.verbose.writeflags(pytplArgs, 'Options');
 
-        spawn('python.exe', pytplArgs, {stdio: 'inherit'});
+        var child = grunt.util.spawn({
+          cmd: 'python.exe',
+          args: pytplArgs
+        }, function (err, result, code) {
+          var success = code === 0;
+          grunt.verbose.writeln('Result: ' + result.cyan);
+          cb(success);
+        });
+        child.stdout.pipe(process.stdout);
+        child.stderr.pipe(process.stderr);
+        
     };
 
-    grunt.registerTask('pytpl', 'Execute pytpl', function () {            
+    grunt.registerMultiTask('pytpl', 'Execute pytpl', function () {            
         var options = this.options();
+        var cb = this.async();
 
         grunt.verbose.writeflags(options, 'Options');
 
@@ -38,18 +48,19 @@ module.exports = function(grunt) {
     
           filePair.src.forEach(function(src) {
             if (detectDestType(filePair.dest) === 'directory') {
-              dest = (isExpandedPair) ? filePair.dest : unixifyPath(path.join(filePair.dest, src.replace(/\.tpl$/i, '')));
+              dest = (isExpandedPair) ? filePair.dest : unixifyPath(path.join(filePair.dest, src));
             } else {
               dest = filePair.dest;
             }
-    
+            dest = dest.replace(/\.tpl$/i, '');
+            
             if (grunt.file.isDir(src)) {
               grunt.verbose.writeln('Creating ' + dest.cyan);
               grunt.file.mkdir(dest);
               tally.dirs++;
             } else {
               grunt.verbose.writeln('Process ' + src.cyan + ' -> ' + dest.cyan);
-              compile(src, dest);
+              processTemplate(src, dest, cb);
               tally.files++;
             }
           });
@@ -60,7 +71,7 @@ module.exports = function(grunt) {
     }
 
     if (tally.files) {
-      grunt.log.write((tally.dirs ? ', processed ' : 'Copied ') + tally.files.toString().cyan + ' files');
+      grunt.log.write((tally.dirs ? ', processed ' : 'Processed ') + tally.files.toString().cyan + ' files');
     }
 
     grunt.log.writeln();

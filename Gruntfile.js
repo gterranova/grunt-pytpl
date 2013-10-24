@@ -46,7 +46,7 @@ module.exports = function(grunt) {
           {expand: true, cwd: 'test/fixtures', src: ['<%= test_vars.match %>'], dest: 'tmp/pytpl_test_v<%= test_vars.version %>/'}
         ]
       },
-
+      
       flatten: {
         files: [
           {expand: true, flatten: true, filter: 'isFile', src: ['test/fixtures/**'], dest: 'tmp/pytpl_test_flatten/'}
