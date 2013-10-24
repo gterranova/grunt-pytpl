@@ -10,31 +10,58 @@ module.exports = function(grunt) {
     'use strict';
 
     var path = require('path');
-    var spawn = require('child_process').spawn;
+    var exec = require('child_process').exec;
     var pytpl = require('node-pytpl-bin');
-    
-    var processTemplate = function(src, dest, cb)  {
-        var pytplArgs = [pytpl.path, src, dest];
-        grunt.verbose.writeflags(pytplArgs, 'Options');
 
-        var child = grunt.util.spawn({
+    // A slow useless function
+    function slowFunction(times) {
+        var i = 0,
+        times = parseInt(1000000000 * times);
+    
+        while (i < times) {
+          i += 1;
+        }
+    
+        return times;
+    }
+    
+    function handleResult(from, dest, err, stdout, code, done) {
+        if(err){
+            grunt.log.writeln(from + ': failed to compile to ' + dest + '.');
+            grunt.log.writeln(stdout);
+            if(!done){
+                return;
+            }            
+            done(false);
+        }else{
+            grunt.log.writeln(from + ': compiled to ' + dest + '.');
+            if(!done){
+                return;
+            }            
+            done(true);
+        }
+    }    
+    var processTemplate = function(src, dest, done)  {
+        var pytplArgs = [pytpl.path, src, dest];
+        
+        var command = 'python.exe' + ' ' + pytplArgs.join(' ');
+        exec(command, {}, function(err, stdout, code){
+             handleResult(src, dest, err, stdout, code, done);
+        });
+
+        /*var child = grunt.util.spawn({
           cmd: 'python.exe',
           args: pytplArgs
         }, function (err, result, code) {
           var success = code === 0;
-          grunt.verbose.writeln('Result: ' + result.cyan);
-          cb(success);
         });
         child.stdout.pipe(process.stdout);
-        child.stderr.pipe(process.stderr);
+        child.stderr.pipe(process.stderr);*/
         
     };
 
     grunt.registerMultiTask('pytpl', 'Execute pytpl', function () {            
         var options = this.options();
-        var cb = this.async();
-
-        grunt.verbose.writeflags(options, 'Options');
 
         var dest;
         var isExpandedPair;
@@ -60,7 +87,7 @@ module.exports = function(grunt) {
               tally.dirs++;
             } else {
               grunt.verbose.writeln('Process ' + src.cyan + ' -> ' + dest.cyan);
-              processTemplate(src, dest, cb);
+              processTemplate(src, dest);
               tally.files++;
             }
           });
@@ -75,6 +102,7 @@ module.exports = function(grunt) {
     }
 
     grunt.log.writeln();
+    slowFunction(1);
   });
 
   var detectDestType = function(dest) {
