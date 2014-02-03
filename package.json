@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "node-pytpl-bin": "git+ssh://git@github.com:gterranova/node-pytpl-bin.git"
-  },  
+  },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.2.0",
     "grunt-contrib-nodeunit": "~0.1.2",
@@ -43,5 +43,13 @@
   },
   "keywords": [
     "gruntplugin"
-  ]
+  ],
+  "readme": "# grunt-pytpl\r\n\r\n> Starts your pytpl\r\n\r\n## Getting Started\r\nThis plugin requires Grunt `~0.4.0`\r\n\r\nIf you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:\r\n\r\n```shell\r\nInstall with npm: `npm install --save-dev git://github.com/gterranova/node-pytpl-bin.git`\r\n```\r\n\r\nOnce the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:\r\n\r\n```js\r\ngrunt.loadNpmTasks('grunt-pytpl');\r\n```\r\n\r\n## The \"pytpl\" task\r\n\r\n### Overview\r\nIn your project's Gruntfile, add a section named `pytpl` to the data object passed into `grunt.initConfig()`.\r\n\r\n```js\r\ngrunt.initConfig({\r\n  pytpl: {\r\n      convert: {\r\n        files: [\r\n          {expand: true, cwd: 'src', src: ['{,**/}*.tpl','!{,**/}_*.tpl'], dest: 'dest/'}\r\n        ]\r\n      },\r\n  },\r\n})\r\n```\r\n\r\n### Options\r\n\r\nSee grunt-copy documentation.\r\n\r\n## Contributing\r\nIn lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).\r\n\r\n## Release History\r\n_(Nothing yet)_\r\n\r\n## License\r\n\r\nEverything licensed under the [BSD license](http://opensource.org/licenses/bsd-license.php)  and copyright Gianpaolo Terranova.\r\n\r\n",
+  "readmeFilename": "README.md",
+  "_id": "grunt-pytpl@0.1.0",
+  "dist": {
+    "shasum": "f03a27ec627e7f188a887469216363d769196d58"
+  },
+  "_resolved": "git+ssh://git@github.com:gterranova/grunt-pytpl.git#967cfe2c2934841fd80719ea1ef211c84275a7e1",
+  "_from": "grunt-pytpl@git+ssh://git@github.com:gterranova/grunt-pytpl.git"
 }
